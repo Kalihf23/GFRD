@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration - Performance GSM</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="styles/main.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="sidebar-header p-3">
+            <h5 class="text-white">Performance-GSM</h5>
+            <small class="text-muted">Espace Administrateur</small>
+        </div>
+        
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" href="#dashboard" data-bs-toggle="tab">
+                    <i class="fas fa-tachometer-alt"></i>Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#performance" data-bs-toggle="tab">
+                    <i class="fas fa-chart-bar"></i>Performance
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#feedback" data-bs-toggle="tab">
+                    <i class="fas fa-comments"></i>Feedback
+                    <span class="badge bg-danger badge-notification" id="feedbackBadge">0</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#mail" data-bs-toggle="tab">
+                    <i class="fas fa-envelope"></i>Mail
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#message" data-bs-toggle="tab">
+                    <i class="fas fa-comment-dots"></i>Message
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#rapports" data-bs-toggle="tab">
+                    <i class="fas fa-file-export"></i>Rapports
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#gestion-utilisateur" data-bs-toggle="tab">
+                    <i class="fas fa-users-cog"></i>Gestion Utilisateur
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#reglage" data-bs-toggle="tab">
+                    <i class="fas fa-cogs"></i>Réglage
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#about" data-bs-toggle="tab">
+                    <i class="fas fa-info-circle"></i>À propos
+                </a>
+            </li>
+            <li class="nav-item mt-3">
+                <a class="nav-link text-warning" href="#" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>Déconnexion
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container-fluid">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="mb-0" id="welcomeMessage">Tableau de Bord Administrateur</h4>
+                <div class="d-flex align-items-center">
+                    <span class="badge bg-primary me-3">Admin</span>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user me-2"></i>
+                            <span id="userName"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Paramètres</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="#" id="logoutBtn2"><i class="fas fa-sign-out-alt me-2"></i>Déconnexion</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenu des onglets -->
+            <div class="tab-content">
+                <!-- Dashboard Admin -->
+                <div class="tab-pane fade show active" id="dashboard">
+                    <!-- Statistiques Globales -->
+                    <div class="row mb-4">
+                        <div class="col-md-3">
+                            <div class="card bg-primary text-white">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <h4 id="totalAgents">0</h4>
+                                            <small>Agents Actifs</small>
+                                        </div>
+                                        <i class="fas fa-users fa-2x opacity-50"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-success text-white">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <h4 id="totalCasTraites">0</h4>
+                                            <small>Cas Traités</small>
+                                        </div>
+                                        <i class="fas fa-check-circle fa-2x opacity-50"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-warning text-white">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <h4 id="tauxResolution">0%</h4>
+                                            <small>Taux Résolution</small>
+                                        </div>
+                                        <i class="fas fa-chart-line fa-2x opacity-50"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-info text-white">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <h4 id="feedbacksNonLus">0</h4>
+                                            <small>Feedbacks Non Lus</small>
+                                        </div>
+                                        <i class="fas fa-comment fa-2x opacity-50"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- Graphique Évolution Toutes Équipes -->
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">Évolution des Cas - Toutes Équipes</h5>
+                                    <select class="form-select form-select-sm w-auto" id="dashboardPeriod">
+                                        <option value="week">Cette Semaine</option>
+                                        <option value="month">Ce Mois</option>
+                                        <option value="quarter">Ce Trimestre</option>
+                                    </select>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-container">
+                                        <canvas id="globalEvolutionChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Performance par Équipe -->
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Performance par Équipe</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-container">
+                                        <canvas id="teamPerformanceChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tableau Comparatif -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Comparaison des Équipes - Semaine</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Équipe</th>
+                                                    <th>Agents</th>
+                                                    <th>Cas Résolus</th>
+                                                    <th>Injoignables</th>
+                                                    <th>Non Traités</th>
+                                                    <th>Taux Résolution</th>
+                                                    <th>Évolution</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="teamsComparisonTable">
+                                                <!-- Données chargées via JavaScript -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Performance Admin -->
+                <div class="tab-pane fade" id="performance">
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Filtres Avancés</h5>
+                                </div>
+                                <div class="card-body">
+                                    <form id="performanceFilters">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label class="form-label">Période</label>
+                                                <input type="date" class="form-control" id="filterDateStart">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label">à</label>
+                                                <input type="date" class="form-control" id="filterDateEnd">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label">Équipe</label>
+                                                <select class="form-select" id="filterTeam" multiple>
+                                                    <option value="all">Toutes les équipes</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label">Agent</label>
+                                                <select class="form-select" id="filterAgent" multiple>
+                                                    <option value="all">Tous les agents</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-md-4">
+                                                <label class="form-label">Type de Cas</label>
+                                                <select class="form-select" id="filterCaseType" multiple>
+                                                    <option value="all">Tous les types</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-8 d-flex align-items-end">
+                                                <button type="button" class="btn btn-primary me-2" onclick="applyFilters()">
+                                                    <i class="fas fa-filter me-2"></i>Appliquer
+                                                </button>
+                                                <button type="button" class="btn btn-outline-secondary" onclick="resetFilters()">
+                                                    <i class="fas fa-redo me-2"></i>Réinitialiser
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Statistiques Filtrees -->
+                    <div class="row mb-4">
+                        <div class="col-md-2">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <h3 id="filteredTotal">0</h3>
+                                    <small class="text-muted">Total Cas</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <h3 id="filteredResolved">0</h3>
+                                    <small class="text-muted">Résolus</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <h3 id="filteredUnreachable">0</h3>
+                                    <small class="text-muted">Injoignables</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <h3 id="filteredUntreated">0</h3>
+                                    <small class="text-muted">Non Traités</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <h3 id="filteredRate">0%</h3>
+                                    <small class="text-muted">Taux Résolution</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="card text-center bg-light">
+                                <div class="card-body">
+                                    <button class="btn btn-success btn-sm" onclick="exportPerformanceData()">
+                                        <i class="fas fa-download me-1"></i>Exporter
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Graphique et Tableau -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Visualisation des Données</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-container">
+                                        <canvas id="performanceAnalysisChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Données Détail</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                                        <table class="table table-sm table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Agent</th>
+                                                    <th>Type</th>
+                                                    <th>Résolus</th>
+                                                    <th>Taux</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="performanceDetailTable">
+                                                <!-- Données chargées via JavaScript -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feedback Admin -->
+                <div class="tab-pane fade" id="feedback">
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">Feedbacks des Agents</h5>
+                                    <div class="d-flex">
+                                        <input type="date" class="form-control form-control-sm me-2" id="feedbackDateStart">
+                                        <input type="date" class="form-control form-control-sm me-2" id="feedbackDateEnd">
+                                        <button class="btn btn-sm btn-primary" onclick="filterFeedbacks()">
+                                            <i class="fas fa-filter me-1"></i>Filtrer
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div id="feedbacksList">
+                                        <!-- Feedbacks chargés via JavaScript -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mail Admin -->
+                <div class="tab-pane fade" id="mail">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Envoyer un Mail</h5>
+                                </div>
+                                <div class="card-body">
+                                    <form id="adminMailForm">
+                                        <div class="mb-3">
+                                            <label class="form-label">Destinataire</label>
+                                            <select class="form-select" id="mailRecipientType">
+                                                <option value="team">Équipe</option>
+                                                <option value="agent">Agent</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3" id="teamSelection">
+                                            <label class="form-label">Équipe</label>
+                                            <select class="form-select" id="mailTeam">
+                                                <option value="">Choisir une équipe</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3" id="agentSelection" style="display: none;">
+                                            <label class="form-label">Agent</label>
+                                            <select class="form-select" id="mailAgent">
+                                                <option value="">Choisir un agent</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Message</label>
+                                            <textarea class="form-control" id="mailContent" rows="4" required></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary w-100">
+                                            <i class="fas fa-paper-plane me-2"></i>Envoyer
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Historique des Mails</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Expéditeur</th>
+                                                    <th>Destinataire</th>
+                                                    <th>Message</th>
+                                                    <th>Statut</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="mailsHistoryTable">
+                                                <!-- Données chargées via JavaScript -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Message Admin -->
+                <div class="tab-pane fade" id="message">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Nouveau Message</h5>
+                                </div>
+                                <div class="card-body">
+                                    <form id="adminMessageForm">
+                                        <div class="mb-3">
+                                            <label class="form-label">Type de Destinataire</label>
+                                            <select class="form-select" id="messageRecipientType">
+                                                <option value="team">Équipe</option>
+                                                <option value="agent">Agent</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Destinataire</label>
+                                            <select class="form-select" id="messageRecipient">
+                                                <option value="">Choisir</option>
+                                            <!-- Rempli dynamiquement -->
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Sujet</label>
+                                            <input type="text" class="form-control" id="messageSubject" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Message</label>
+                                            <textarea class="form-control" id="messageContent" rows="4" required></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary w-100">
+                                            <i class="fas fa-paper-plane me-2"></i>Envoyer
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Historique des Messages (45 jours)</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>De</th>
+                                                    <th>À</th>
+                                                    <th>Sujet</th>
+                                                    <th>Message</th>
+                                                    <th>Statut</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="messagesHistoryTable">
+                                                <!-- Données chargées via JavaScript -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rapports -->
+                <div class="tab-pane fade" id="rapports">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Génération de Rapports</h5>
+                                </div>
+                                <div class="card-body">
+                                    <form id="reportForm">
+                                        <div class="row mb-4">
+                                            <div class="col-md-3">
+                                                <label class="form-label">Type de Rapport</label>
+                                                <select class="form-select" id="reportType" required>
+                                                    <option value="">Choisir un type</option>
+                                                    <option value="performance">Performances</option>
+                                                    <option value="agents">Liste des Agents</option>
+                                                    <option value="messages">Messages</option>
+                                                    <option value="feedbacks">Feedbacks</option>
+                                                    <option value="mails">Mails</option>
+                                                    <option value="caisse">Caisse</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label">Date de Début</label>
+                                                <input type="date" class="form-control" id="reportDateStart">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label">Date de Fin</label>
+                                                <input type="date" class="form-control" id="reportDateEnd">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label class="form-label">Équipe</label>
+                                                <select class="form-select" id="reportTeam">
+                                                    <option value="all">Toutes les équipes</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-4">
+                                            <div class="col-md-4">
+                                                <label class="form-label">Format d'Export</label>
+                                                <select class="form-select" id="reportFormat">
+                                                    <option value="excel">Excel (.xlsx)</option>
+                                                    <option value="pdf">PDF (.pdf)</option>
+                                                    <option value="csv">CSV (.csv)</option>
+                                                    <option value="powerpoint">PowerPoint (.pptx)</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-8 d-flex align-items-end">
+                                                <button type="button" class="btn btn-primary me-2" onclick="generateReport()">
+                                                    <i class="fas fa-cog me-2"></i>Générer le Rapport
+                                                </button>
+                                                <button type="button" class="btn btn-outline-secondary" onclick="previewReport()">
+                                                    <i class="fas fa-eye me-2"></i>Aperçu
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                    <!-- Aperçu du Rapport -->
+                                    <div id="reportPreview" class="mt-4" style="display: none;">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5 class="mb-0">Aperçu du Rapport</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div id="previewContent">
+                                                    <!-- Contenu de l'aperçu -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gestion Utilisateur -->
+                <div class="tab-pane fade" id="gestion-utilisateur">
+                    <div class="row">
+                        <div class="col-12">
+                            <ul class="nav nav-tabs" id="userManagementTabs" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="compte-tab" data-bs-toggle="tab" data-bs-target="#compte">
+                                        Comptes <span class="badge bg-warning" id="pendingCount">0</span>
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="utilisateurs-tab" data-bs-toggle="tab" data-bs-target="#utilisateurs">
+                                        Utilisateurs Actifs
+                                    </button>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content mt-3">
+                                <!-- Section Comptes -->
+                                <div class="tab-pane fade show active" id="compte">
+                                    <div class="card">
+                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                            <h5 class="mb-0">Gestion des Comptes</h5>
+                                            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createUserModal">
+                                                <i class="fas fa-plus me-1"></i>Créer un Compte
+                                            </button>
+                                        </div>
+                                        <div class="card-body">
+                                            <ul class="nav nav-pills mb-3" id="accountStatusTabs" role="tablist">
+                                                <li class="nav-item">
+                                                    <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#allAccounts">Tous</button>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <button class="nav-link" data-bs-toggle="pill" data-bs-target="#pendingAccounts">
+                                                        En Attente <span class="badge bg-warning" id="pendingBadge">0</span>
+                                                    </button>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <button class="nav-link" data-bs-toggle="pill" data-bs-target="#activeAccounts">Activés</button>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <button class="nav-link" data-bs-toggle="pill" data-bs-target="#rejectedAccounts">Rejetés</button>
+                                                </li>
+                                            </ul>
+
+                                            <div class="tab-content">
+                                                <div class="tab-pane fade show active" id="allAccounts">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-striped">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Nom</th>
+                                                                    <th>Email</th>
+                                                                    <th>Équipe</th>
+                                                                    <th>Rôle</th>
+                                                                    <th>Statut</th>
+                                                                    <th>Date</th>
+                                                                    <th>Actions</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="allAccountsTable">
+                                                                <!-- Données chargées via JavaScript -->
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <!-- Les autres onglets (pending, active, rejected) auront une structure similaire -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Section Utilisateurs -->
+                                <div class="tab-pane fade" id="utilisateurs">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5 class="mb-0">Gestion des Utilisateurs Actifs</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row mb-3">
+                                                <div class="col-md-4">
+                                                    <input type="text" class="form-control" placeholder="Rechercher un utilisateur..." id="userSearch">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <select class="form-select" id="filterByTeam">
+                                                        <option value="">Toutes les équipes</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <select class="form-select" id="filterByRole">
+                                                        <option value="">Tous les rôles</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="table-responsive">
+                                                <table class="table table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Nom</th>
+                                                            <th>Email</th>
+                                                            <th>Équipe</th>
+                                                            <th>Rôle</th>
+                                                            <th>Contact</th>
+                                                            <th>Onglets Visibles</th>
+                                                            <th>Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="activeUsersTable">
+                                                        <!-- Données chargées via JavaScript -->
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Réglage -->
+                <div class="tab-pane fade" id="reglage">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <!-- Apparence -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0"><i class="fas fa-palette me-2"></i>Apparence</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label class="form-label">Couleur Principale</label>
+                                        <div class="color-picker">
+                                            <div class="color-options">
+                                                <div class="color-option" data-color="#dc3545" style="background-color: #dc3545;"></div>
+                                                <div class="color-option" data-color="#28a745" style="background-color: #28a745;"></div>
+                                                <div class="color-option" data-color="#007bff" style="background-color: #007bff;"></div>
+                                                <div class="color-option" data-color="#6f42c1" style="background-color: #6f42c1;"></div>
+                                                <div class="color-option" data-color="#fd7e14" style="background-color: #fd7e14;"></div>
+                                                <div class="color-option" data-color="#20c997" style="background-color: #20c997;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Arrière-plan</label>
+                                        <select class="form-select" id="backgroundTheme">
+                                            <option value="light">Clair</option>
+                                            <option value="light-gray">Gris Clair</option>
+                                            <option value="light-blue">Bleu Très Pâle</option>
+                                            <option value="light-yellow">Jaune Clair</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Taille de Police</label>
+                                        <input type="range" class="form-range" id="fontSize" min="12" max="24" value="16">
+                                        <div class="d-flex justify-content-between">
+                                            <small>Petite</small>
+                                            <small>Défaut</small>
+                                            <small>Grande</small>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-primary" onclick="saveAppearanceSettings()">
+                                        <i class="fas fa-save me-2"></i>Enregistrer
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <!-- Maintenance -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0"><i class="fas fa-tools me-2"></i>Maintenance</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label class="form-label">Planifier une Indisponibilité</label>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <input type="datetime-local" class="form-control" id="maintenanceStart">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <input type="datetime-local" class="form-control" id="maintenanceEnd">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Message de Maintenance</label>
+                                        <textarea class="form-control" id="maintenanceMessage" rows="3" placeholder="L'application est en maintenance..."></textarea>
+                                    </div>
+                                    <div class="form-check form-switch mb-3">
+                                        <input class="form-check-input" type="checkbox" id="maintenanceEnabled">
+                                        <label class="form-check-label" for="maintenanceEnabled">
+                                            Rendre l'application inaccessible pendant cette période
+                                        </label>
+                                    </div>
+                                    <button class="btn btn-warning" onclick="scheduleMaintenance()">
+                                        <i class="fas fa-calendar-alt me-2"></i>Planifier
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Archivage -->
+                            <div class="card mt-4">
+                                <div class="card-header">
+                                    <h5 class="mb-0"><i class="fas fa-archive me-2"></i>Archivage des Données</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label class="form-label">Archivage Automatique</label>
+                                        <select class="form-select" id="autoArchive">
+                                            <option value="disabled">Désactivé</option>
+                                            <option value="monthly">Tous les mois</option>
+                                            <option value="quarterly">Tous les 3 mois</option>
+                                            <option value="semiannually" selected>Tous les 6 mois</option>
+                                            <option value="annually">Tous les ans</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <small class="text-muted">
+                                            Les données de plus de 6 mois seront automatiquement archivées.
+                                        </small>
+                                    </div>
+                                    <button class="btn btn-info me-2" onclick="archiveNow()">
+                                        <i class="fas fa-archive me-2"></i>Archiver Maintenant
+                                    </button>
+                                    <button class="btn btn-outline-secondary" onclick="viewArchive()">
+                                        <i class="fas fa-eye me-2"></i>Voir les Archives
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- À propos -->
+                <div class="tab-pane fade" id="about">
+                    <!-- Même contenu que les autres pages -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Création Utilisateur -->
+    <div class="modal fade" id="createUserModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Créer un Nouvel Utilisateur</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="createUserForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Nom</label>
+                                    <input type="text" class="form-control" id="newUserLastName" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Prénom</label>
+                                    <input type="text" class="form-control" id="newUserFirstName" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="newUserEmail" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Rôle</label>
+                                    <select class="form-select" id="newUserRole" required>
+                                        <option value="agent">Agent</option>
+                                        <option value="agentT">Agent Tâche</option>
+                                        <option value="agentC">Agent Caisse</option>
+                                        <option value="admin">Administrateur</option>
+                                        <option value="adminP">Admin Principal</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Équipe</label>
+                                    <select class="form-select" id="newUserTeam" required>
+                                        <option value="">Choisir une équipe</option>
+                                        <option value="Plaintes Diverses">Plaintes Diverses</option>
+                                        <option value="Conservation">Conservation</option>
+                                        <option value="Outbound">Outbound</option>
+                                        <option value="Supervision">Supervision</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Contact</label>
+                                    <input type="text" class="form-control" id="newUserContact" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Quartier</label>
+                            <input type="text" class="form-control" id="newUserNeighborhood" required>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="sendInvitation" checked>
+                                <label class="form-check-label" for="sendInvitation">
+                                    Envoyer un email d'invitation avec lien de configuration du mot de passe
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary" onclick="createNewUser()">Créer l'Utilisateur</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@10.0.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/appwrite-config.js"></script>
+    <script src="js/admin-dashboard.js"></script>
+</body>
+</html>

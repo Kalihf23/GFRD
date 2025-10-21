@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Principal - Performance GSM</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="styles/main.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Sidebar réduite pour AdminP -->
+    <nav class="sidebar">
+        <div class="sidebar-header p-3">
+            <h5 class="text-white">Performance-GSM</h5>
+            <small class="text-muted">Admin Principal</small>
+        </div>
+        
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" href="#gestion-utilisateur" data-bs-toggle="tab">
+                    <i class="fas fa-users-cog"></i>Gestion Utilisateur
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#reglage" data-bs-toggle="tab">
+                    <i class="fas fa-cogs"></i>Réglage
+                </a>
+            </li>
+            <li class="nav-item mt-3">
+                <a class="nav-link text-warning" href="#" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>Déconnexion
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container-fluid">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="mb-0" id="welcomeMessage">Espace Admin Principal</h4>
+                <div class="d-flex align-items-center">
+                    <span class="badge bg-danger me-3">Admin Principal</span>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user me-2"></i>
+                            <span id="userName"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Paramètres</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="#" id="logoutBtn2"><i class="fas fa-sign-out-alt me-2"></i>Déconnexion</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenu des onglets -->
+            <div class="tab-content">
+                <!-- Gestion Utilisateur (identique à admin.html mais avec plus de permissions) -->
+                <div class="tab-pane fade show active" id="gestion-utilisateur">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">Gestion Avancée des Utilisateurs</h5>
+                                    <div>
+                                        <button class="btn btn-primary btn-sm me-2" data-bs-toggle="modal" data-bs-target="#createUserModal">
+                                            <i class="fas fa-plus me-1"></i>Créer un Compte
+                                        </button>
+                                        <button class="btn btn-success btn-sm" onclick="exportUsersList()">
+                                            <i class="fas fa-download me-1"></i>Exporter
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <!-- Même contenu que la section gestion utilisateur de admin.html -->
+                                    <!-- Mais avec des fonctionnalités supplémentaires pour AdminP -->
+                                    
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        <strong>Privilèges Admin Principal :</strong> Vous pouvez modifier tous les comptes, 
+                                        créer des administrateurs, et gérer les départements.
+                                    </div>
+
+                                    <!-- Interface pour ajouter des départements -->
+                                    <div class="card mt-4">
+                                        <div class="card-header">
+                                            <h6 class="mb-0">Gestion des Départements</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <form id="departmentForm">
+                                                        <div class="input-group mb-3">
+                                                            <input type="text" class="form-control" placeholder="Nouveau département" id="newDepartment">
+                                                            <button class="btn btn-primary" type="submit">Ajouter</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <ul class="list-group" id="departmentsList">
+                                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                            GSM
+                                                            <span class="badge bg-primary">Défaut</span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Interface pour ajouter des équipes -->
+                                    <div class="card mt-4">
+                                        <div class="card-header">
+                                            <h6 class="mb-0">Gestion des Équipes</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <form id="teamForm">
+                                                        <div class="mb-3">
+                                                            <input type="text" class="form-control" placeholder="Nouvelle équipe" id="newTeam" required>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <select class="form-select" id="teamDepartment" required>
+                                                                <option value="GSM">GSM</option>
+                                                            </select>
+                                                        </div>
+                                                        <button class="btn btn-primary" type="submit">Ajouter l'Équipe</button>
+                                                    </form>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-sm">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Équipe</th>
+                                                                    <th>Département</th>
+                                                                    <th>Membres</th>
+                                                                    <th>Action</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="teamsList">
+                                                                <!-- Équipes chargées via JavaScript -->
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Réglage (identique à admin.html) -->
+                <div class="tab-pane fade" id="reglage">
+                    <!-- Même contenu que l'onglet réglage de admin.html -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Création Utilisateur (avec options étendues pour AdminP) -->
+    <div class="modal fade" id="createUserModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Créer un Nouvel Utilisateur</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="createUserForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Nom</label>
+                                    <input type="text" class="form-control" id="newUserLastName" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Prénom</label>
+                                    <input type="text" class="form-control" id="newUserFirstName" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="newUserEmail" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Rôle</label>
+                                    <select class="form-select" id="newUserRole" required>
+                                        <option value="agent">Agent</option>
+                                        <option value="agentT">Agent Tâche</option>
+                                        <option value="agentC">Agent Caisse</option>
+                                        <option value="admin">Administrateur</option>
+                                        <option value="adminP">Admin Principal</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Département</label>
+                                    <select class="form-select" id="newUserDepartment" required>
+                                        <option value="GSM">GSM</option>
+                                        <!-- Autres départements dynamiques -->
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Équipe</label>
+                                    <select class="form-select" id="newUserTeam" required>
+                                        <option value="">Choisir une équipe</option>
+                                        <!-- Équipes dynamiques -->
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Contact</label>
+                                    <input type="text" class="form-control" id="newUserContact" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Quartier</label>
+                                    <input type="text" class="form-control" id="newUserNeighborhood" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="sendInvitation" checked>
+                                <label class="form-check-label" for="sendInvitation">
+                                    Envoyer un email d'invitation avec lien de configuration du mot de passe
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="activateImmediately" checked>
+                                <label class="form-check-label" for="activateImmediately">
+                                    Activer le compte immédiatement
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary" onclick="createNewUser()">Créer l'Utilisateur</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@10.0.0"></script>
+    <script src="js/appwrite-config.js"></script>
+    <script src="js/adminP-dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance-GSM - Connexion</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #dc3545; /* Rouge par défaut */
+        }
+        .bg-primary-custom { background-color: var(--primary-color) !important; }
+        .btn-primary-custom { background-color: var(--primary-color); border-color: var(--primary-color); }
+        .btn-primary-custom:hover { background-color: #b02a37; border-color: #a52834; }
+    </style>
+</head>
+<body class="bg-light">
+    <div class="container vh-100 d-flex align-items-center justify-content-center">
+        <div class="row w-100">
+            <div class="col-md-6 mx-auto">
+                <div class="card shadow">
+                    <div class="card-header bg-primary-custom text-white text-center">
+                        <h4>Performance-GSM</h4>
+                        <p class="mb-0">Connectez-vous à votre espace</p>
+                    </div>
+                    <div class="card-body">
+                        <ul class="nav nav-tabs nav-justified mb-3" id="authTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab">Connexion</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="register-tab" data-bs-toggle="tab" data-bs-target="#register" type="button" role="tab">Créer un compte</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="authTabContent">
+                            <!-- Onglet Connexion -->
+                            <div class="tab-pane fade show active" id="login" role="tabpanel">
+                                <form id="loginForm">
+                                    <div class="mb-3">
+                                        <label for="loginEmail" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="loginEmail" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="loginPassword" class="form-label">Mot de passe</label>
+                                        <input type="password" class="form-control" id="loginPassword" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary-custom w-100">Se connecter</button>
+                                </form>
+                                <div id="loginMessage" class="mt-3"></div>
+                            </div>
+
+                            <!-- Onglet Inscription -->
+                            <div class="tab-pane fade" id="register" role="tabpanel">
+                                <form id="registerForm">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="regLastName" class="form-label">Nom</label>
+                                            <input type="text" class="form-control" id="regLastName" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="regFirstName" class="form-label">Prénom</label>
+                                            <input type="text" class="form-control" id="regFirstName" required>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="regEmail" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="regEmail" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="regTeam" class="form-label">Équipe</label>
+                                        <select class="form-select" id="regTeam" required>
+                                            <option value="">Choisir une équipe</option>
+                                            <option value="Plaintes Diverses">Plaintes Diverses</option>
+                                            <option value="Conservation">Conservation</option>
+                                            <option value="Outbound">Outbound</option>
+                                            <option value="Supervision">Supervision</option>
+                                        </select>
+                                    </div>
+                                    <!-- Le champ Groupe n'apparaît que si l'équipe est "Plaintes Diverses" -->
+                                    <div class="mb-3" id="groupField" style="display: none;">
+                                        <label for="regGroup" class="form-label">Groupe</label>
+                                        <select class="form-select" id="regGroup">
+                                            <option value="G1">G1</option>
+                                            <option value="G2">G2</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="regContact" class="form-label">Contact</label>
+                                        <input type="text" class="form-control" id="regContact" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="regNeighborhood" class="form-label">Quartier</label>
+                                        <input type="text" class="form-control" id="regNeighborhood" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="regPassword" class="form-label">Mot de passe</label>
+                                        <input type="password" class="form-control" id="regPassword" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary-custom w-100">Créer le compte</button>
+                                </form>
+                                <div id="registerMessage" class="mt-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Intégration du SDK Appwrite -->
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@10.0.0"></script>
+    <script>
+        // Configuration du client Appwrite
+        const client = new Appwrite.Client();
+        client
+            .setEndpoint('https://cloud.appwrite.io/v1') // Remplacez par votre endpoint
+            .setProject('YOUR_PROJECT_ID'); // Remplacez par votre Project ID
+
+        const account = new Appwrite.Account(client);
+
+        // Gestion de l'affichage conditionnel du champ "Groupe"
+        document.getElementById('regTeam').addEventListener('change', function() {
+            const groupField = document.getElementById('groupField');
+            if (this.value === 'Plaintes Diverses') {
+                groupField.style.display = 'block';
+            } else {
+                groupField.style.display = 'none';
+                document.getElementById('regGroup').value = ''; // Réinitialiser la valeur
+            }
+        });
+
+        // Gestion de la soumission du formulaire de CONNEXION
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                // 1. Connexion avec Appwrite
+                const session = await account.createEmailSession(email, password);
+                console.log('Connexion réussie!', session);
+
+                // 2. Récupérer les infos de l'utilisateur pour connaître son rôle
+                const user = await account.get();
+                // Ici, vous devrez récupérer le rôle personnalisé depuis les "Labels" de l'utilisateur.
+                // Ceci nécessite une Fonction Appwrite ou une lecture en base de données.
+                // Pour l'exemple, supposons que le rôle est dans un label 'role'.
+                const userRole = user.labels?.role || 'agent'; // Valeur par défaut
+
+                // 3. Rediriger vers la page correspondante
+                switch (userRole) {
+                    case 'agent':
+                        window.location.href = 'agent.html';
+                        break;
+                    case 'agentT':
+                        window.location.href = 'agentT.html';
+                        break;
+                    case 'agentC':
+                        window.location.href = 'agentC.html';
+                        break;
+                    case 'admin':
+                        window.location.href = 'admin.html';
+                        break;
+                    case 'adminP':
+                        window.location.href = 'adminP.html';
+                        break;
+                    default:
+                        throw new Error('Rôle utilisateur non reconnu.');
+                }
+
+            } catch (error) {
+                console.error('Erreur de connexion:', error);
+                document.getElementById('loginMessage').innerHTML = `<div class="alert alert-danger">Erreur de connexion: ${error.message}</div>`;
+            }
+        });
+
+        // Gestion de la soumission du formulaire d'INSCRIPTION
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const lastName = document.getElementById('regLastName').value;
+            const firstName = document.getElementById('regFirstName').value;
+            const team = document.getElementById('regTeam').value;
+            const group = document.getElementById('regGroup').value;
+            const contact = document.getElementById('regContact').value;
+            const neighborhood = document.getElementById('regNeighborhood').value;
+
+            try {
+                // 1. Créer le compte utilisateur avec Appwrite
+                const newUser = await account.create('unique()', email, password, `${firstName} ${lastName}`);
+                console.log('Compte créé!', newUser);
+
+                // 2. METTRE À JOUR LES LABELS (rôle, équipe, etc.)
+                // Cette partie est plus complexe. Il faudra soit :
+                // - Utiliser une Fonction Appwrite qui, après la création du compte, met à jour ses labels avec les infos supplémentaires.
+                // - Créer un document dans une collection `user_profiles` lié à cet `userId`.
+                // Pour l'exemple, nous allons simplement afficher un message de succès.
+                document.getElementById('registerMessage').innerHTML = `<div class="alert alert-success">Compte créé avec succès ! Il est en attente d'activation par un administrateur.</div>`;
+                document.getElementById('registerForm').reset();
+
+            } catch (error) {
+                console.error('Erreur lors de la création du compte:', error);
+                document.getElementById('registerMessage').innerHTML = `<div class="alert alert-danger">Erreur: ${error.message}</div>`;
+            }
+        });
+    </script>
+</body>
+</html>

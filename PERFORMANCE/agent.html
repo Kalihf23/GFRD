@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de Bord - Agent</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="styles/main.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="sidebar-header p-3">
+            <h5 class="text-white">Performance-GSM</h5>
+            <small class="text-muted">Espace Agent</small>
+        </div>
+        
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" href="#dashboard" data-bs-toggle="tab">
+                    <i class="fas fa-tachometer-alt"></i>Tableau de Bord
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#performance" data-bs-toggle="tab">
+                    <i class="fas fa-chart-line"></i>Saisir Performances
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#feedback" data-bs-toggle="tab">
+                    <i class="fas fa-comment"></i>Saisir Feedback
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#mail" data-bs-toggle="tab">
+                    <i class="fas fa-envelope"></i>Mail
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#message" data-bs-toggle="tab">
+                    <i class="fas fa-comments"></i>Message
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#about" data-bs-toggle="tab">
+                    <i class="fas fa-info-circle"></i>À propos
+                </a>
+            </li>
+            <li class="nav-item mt-3">
+                <a class="nav-link text-warning" href="#" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>Déconnexion
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container-fluid">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="mb-0" id="welcomeMessage">Bienvenue, Agent</h4>
+                <div class="d-flex align-items-center">
+                    <span class="badge bg-primary me-3" id="userTeam"></span>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user me-2"></i>
+                            <span id="userName"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Paramètres</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="#" id="logoutBtn2"><i class="fas fa-sign-out-alt me-2"></i>Déconnexion</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenu des onglets -->
+            <div class="tab-content">
+                <!-- Tableau de Bord -->
+                <div class="tab-pane fade show active" id="dashboard">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">Mes Performances du Mois</h5>
+                                    <span class="badge bg-primary" id="currentMonth"></span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="stats-card">
+                                                <i class="fas fa-check-circle text-success fa-2x"></i>
+                                                <div class="stats-number" id="monthResolved">0</div>
+                                                <div class="stats-label">Cas Résolus</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="stats-card">
+                                                <i class="fas fa-phone-slash text-warning fa-2x"></i>
+                                                <div class="stats-number" id="monthUnreachable">0</div>
+                                                <div class="stats-label">Injoignables</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="stats-card">
+                                                <i class="fas fa-clock text-danger fa-2x"></i>
+                                                <div class="stats-number" id="monthUntreated">0</div>
+                                                <div class="stats-label">Non Traités</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="stats-card">
+                                                <i class="fas fa-chart-pie text-info fa-2x"></i>
+                                                <div class="stats-number" id="monthRate">0%</div>
+                                                <div class="stats-label">Taux de Résolution</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Évolution Hebdomadaire</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-container">
+                                        <canvas id="weeklyChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Répartition par Type de Cas</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-container">
+                                        <canvas id="casesChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Statistiques de mon Équipe (Semaine)</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Agent</th>
+                                                    <th>Résolus</th>
+                                                    <th>Injoignables</th>
+                                                    <th>Non Traités</th>
+                                                    <th>Taux</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="teamStatsBody">
+                                                <!-- Données chargées via JavaScript -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Saisir Performances -->
+                <div class="tab-pane fade" id="performance">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Saisie des Performances</h5>
+                                </div>
+                                <div class="card-body">
+                                    <form id="performanceForm">
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label">Date</label>
+                                                <input type="date" class="form-control" id="performanceDate" required>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Type de Cas</label>
+                                                <select class="form-select" id="caseType" required>
+                                                    <option value="">Choisir un type</option>
+                                                    <option value="Access">Access</option>
+                                                    <option value="Mail">Mail</option>
+                                                    <option value="Feedback">Feedback</option>
+                                                    <option value="Excel">Excel</option>
+                                                    <option value="Ipacs">Ipacs</option>
+                                                    <option value="Remboursement">Remboursement</option>
+                                                    <option value="Urgence">Urgence</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row mb-3">
+                                            <div class="col-md-4">
+                                                <label class="form-label">Cas Résolus</label>
+                                                <input type="number" class="form-control" id="resolvedCases" value="0" min="0">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">Cas Injoignables</label>
+                                                <input type="number" class="form-control" id="unreachableCases" value="0" min="0">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">Cas Non Traités</label>
+                                                <input type="number" class="form-control" id="untreatedCases" value="0" min="0">
+                                            </div>
+                                        </div>
+                                        
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save me-2"></i>Enregistrer
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Historique (8 derniers jours)</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Type</th>
+                                                    <th>Taux</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="performanceHistory">
+                                                <!-- Historique chargé via JavaScript -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Saisir Feedback -->
+                <div class="tab-pane fade" id="feedback">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Envoyer un Feedback</h5>
+                                </div>
+                                <div class="card-body">
+                                    <form id="feedbackForm">
+                                        <div class="row mb-3">
+                                            <div class="col-md-4">
+                                                <label class="form-label">Nature</label>
+                                                <select class="form-select" id="feedbackNature" required>
+                                                    <option value="">Choisir</option>
+                                                    <option value="Difficulté technique">Difficulté technique</option>
+                                                    <option value="Suggestions">Suggestions</option>
+                                                    <option value="Autres">Autres</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">Visibilité</label>
+                                                <select class="form-select" id="feedbackVisibility" required>
+                                                    <option value="">Choisir</option>
+                                                    <option value="Public">Public</option>
+                                                    <option value="Privé">Privé</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="form-label">Message</label>
+                                                <input type="text" class="form-control" id="feedbackMessage" 
+                                                       placeholder="Votre message..." required
+                                                       minlength="12" maxlength="300">
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-paper-plane me-2"></i>Envoyer
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Mes Feedbacks Récent (5 jours)</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div id="feedbackHistory">
+                                        <!-- Historique chargé via JavaScript -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mail -->
+                <div class="tab-pane fade" id="mail">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Répondre au Mail</h5>
+                                </div>
+                                <div class="card-body">
+                                    <form id="mailReplyForm">
+                                        <div class="mb-3">
+                                            <label class="form-label">Message de Supervision</label>
+                                            <textarea class="form-control" id="originalMail" rows="3" readonly></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Votre Réponse</label>
+                                            <textarea class="form-control" id="mailReply" rows="3" 
+                                                      placeholder="Votre réponse..." maxlength="500" required></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Statut du Cas</label>
+                                            <select class="form-select" id="mailStatus" required>
+                                                <option value="">Choisir</option>
+                                                <option value="Client contacté">Client contacté</option>
+                                                <option value="Client injoignable">Client injoignable</option>
+                                            </select>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary w-100">
+                                            <i class="fas fa-reply me-2"></i>Répondre
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">Mails du Jour</h5>
+                                    <span class="badge bg-primary" id="mailCount">0 mails</span>
+                                </div>
+                                <div class="card-body">
+                                    <div id="mailList">
+                                        <!-- Liste des mails chargée via JavaScript -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Message -->
+                <div class="tab-pane fade" id="message">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Nouveau Message</h5>
+                                </div>
+                                <div class="card-body">
+                                    <form id="messageForm">
+                                        <div class="mb-3">
+                                            <label class="form-label">Destinataire (Équipe)</label>
+                                            <select class="form-select" id="messageTeam" required>
+                                                <option value="">Choisir une équipe</option>
+                                                <option value="Plaintes Diverses">Plaintes Diverses</option>
+                                                <option value="Conservation">Conservation</option>
+                                                <option value="Outbound">Outbound</option>
+                                                <option value="Supervision">Supervision</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Sujet</label>
+                                            <input type="text" class="form-control" id="messageSubject" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Message</label>
+                                            <textarea class="form-control" id="messageContent" rows="4" required></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary w-100">
+                                            <i class="fas fa-paper-plane me-2"></i>Envoyer
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">Boîte de Réception</h5>
+                                    <span class="badge bg-warning" id="unreadCount">0 non lus</span>
+                                </div>
+                                <div class="card-body">
+                                    <div id="messageList">
+                                        <!-- Messages chargés via JavaScript -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- À propos -->
+                <div class="tab-pane fade" id="about">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">À propos de Performance-GSM</h5>
+                                </div>
+                                <div class="card-body">
+                                    <h6>Présentation de l'Application</h6>
+                                    <p>L'application GSM Performance a été conçue comme une solution interne complète pour optimiser la gestion des performances des agents au sein de l'entreprise.</p>
+                                    
+                                    <h6 class="mt-4">Objectifs Principaux</h6>
+                                    <ul>
+                                        <li>Centraliser le suivi des performances individuelles et collectives</li>
+                                        <li>Digitaliser le processus de collecte des données de performance</li>
+                                        <li>Automatiser la génération de rapports et statistiques</li>
+                                        <li>Faciliter la communication entre les différentes équipes</li>
+                                    </ul>
+                                    
+                                    <div class="mt-4 p-3 bg-light rounded">
+                                        <h6>Information de Développement</h6>
+                                        <p class="mb-2">L'application est initiée en Juillet 2025. Elle a été inspirée par le fichier de performance mis en place par Sedogo Ismael.</p>
+                                        <p class="mb-2"><strong>Initiateur :</strong> Salifou Kaboré</p>
+                                        <p class="mb-2"><strong>Contact :</strong> 67 08 22 60</p>
+                                        <p class="mb-0"><strong>Email :</strong> salifkalihf@gmail.com</p>
+                                        <small class="text-muted">Cette application est un projet qui peut contenir des erreurs, des bugs. Tous droits réservés.</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@10.0.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/appwrite-config.js"></script>
+    <script src="js/agent-dashboard.js"></script>
+</body>
+</html>

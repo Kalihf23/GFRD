@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caissier - AgentC</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="styles/main.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="sidebar-header p-3">
+            <h5 class="text-white">Performance-GSM</h5>
+            <small class="text-muted">Espace Caissier</small>
+        </div>
+        
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" href="#dashboard" data-bs-toggle="tab">
+                    <i class="fas fa-tachometer-alt"></i>Tableau de Bord
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#performance" data-bs-toggle="tab">
+                    <i class="fas fa-chart-line"></i>Saisir Performances
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#feedback" data-bs-toggle="tab">
+                    <i class="fas fa-comment"></i>Saisir Feedback
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#caisse" data-bs-toggle="tab">
+                    <i class="fas fa-cash-register"></i>Caisse
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#mail" data-bs-toggle="tab">
+                    <i class="fas fa-envelope"></i>Mail
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#message" data-bs-toggle="tab">
+                    <i class="fas fa-comments"></i>Message
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#about" data-bs-toggle="tab">
+                    <i class="fas fa-info-circle"></i>À propos
+                </a>
+            </li>
+            <li class="nav-item mt-3">
+                <a class="nav-link text-warning" href="#" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>Déconnexion
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container-fluid">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="mb-0" id="welcomeMessage">Bienvenue, Caissier</h4>
+                <div class="d-flex align-items-center">
+                    <span class="badge bg-primary me-3" id="userTeam"></span>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user me-2"></i>
+                            <span id="userName"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Paramètres</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="#" id="logoutBtn2"><i class="fas fa-sign-out-alt me-2"></i>Déconnexion</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenu des onglets -->
+            <div class="tab-content">
+                <!-- Tableau de Bord (identique) -->
+                <div class="tab-pane fade show active" id="dashboard">
+                    <!-- Même contenu -->
+                </div>
+
+                <!-- Saisir Performances (identique) -->
+                <div class="tab-pane fade" id="performance">
+                    <!-- Même contenu -->
+                </div>
+
+                <!-- Saisir Feedback (identique) -->
+                <div class="tab-pane fade" id="feedback">
+                    <!-- Même contenu -->
+                </div>
+
+                <!-- Caisse -->
+                <div class="tab-pane fade" id="caisse">
+                    <!-- Résumé de la Caisse -->
+                    <div class="row mb-4">
+                        <div class="col-md-3">
+                            <div class="card bg-primary text-white">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-wallet fa-2x mb-2"></i>
+                                    <h4 id="soldeDepart">0 FCFA</h4>
+                                    <small>Solde de Départ</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-success text-white">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-money-bill-wave fa-2x mb-2"></i>
+                                    <h4 id="totalCotisations">0 FCFA</h4>
+                                    <small>Total Cotisations</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-danger text-white">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-receipt fa-2x mb-2"></i>
+                                    <h4 id="totalDepenses">0 FCFA</h4>
+                                    <small>Total Dépenses</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-dark text-white">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-calculator fa-2x mb-2"></i>
+                                    <h4 id="soldeReel">0 FCFA</h4>
+                                    <small>Solde Réel</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- Gestion des Cotisations -->
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">Gestion des Cotisations</h5>
+                                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#paiementModal">
+                                        <i class="fas fa-plus me-1"></i>Nouveau Paiement
+                                    </button>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Agent</th>
+                                                    <th>Statut</th>
+                                                    <th>Mois</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="cotisationsTable">
+                                                <!-- Données chargées via JavaScript -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Gestion des Dépenses -->
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">Dépenses Récentes</h5>
+                                    <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#depenseModal">
+                                        <i class="fas fa-plus me-1"></i>Nouvelle Dépense
+                                    </button>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Motif</th>
+                                                    <th>Montant</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="depensesTable">
+                                                <!-- Données chargées via JavaScript -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Historique Complet -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">Journal Général des Transactions</h5>
+                                    <div>
+                                        <button class="btn btn-sm btn-outline-primary me-2" onclick="exportToPDF()">
+                                            <i class="fas fa-file-pdf me-1"></i>PDF
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-success" onclick="exportToExcel()">
+                                            <i class="fas fa-file-excel me-1"></i>Excel
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Type</th>
+                                                    <th>Libellé</th>
+                                                    <th>Montant</th>
+                                                    <th>Solde</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="journalTable">
+                                                <!-- Données chargées via JavaScript -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bouton Clôture -->
+                    <div class="row mt-4">
+                        <div class="col-12 text-center">
+                            <button class="btn btn-warning btn-lg" data-bs-toggle="modal" data-bs-target="#clotureModal">
+                                <i class="fas fa-lock me-2"></i>Arrêter les Comptes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mail (identique) -->
+                <div class="tab-pane fade" id="mail">
+                    <!-- Même contenu -->
+                </div>
+
+                <!-- Message (identique) -->
+                <div class="tab-pane fade" id="message">
+                    <!-- Même contenu -->
+                </div>
+
+                <!-- À propos (identique) -->
+                <div class="tab-pane fade" id="about">
+                    <!-- Même contenu -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Paiement -->
+    <div class="modal fade" id="paiementModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Enregistrer un Paiement</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="paiementForm">
+                        <div class="mb-3">
+                            <label class="form-label">Agent</label>
+                            <select class="form-select" id="paiementAgent" required>
+                                <option value="">Choisir un agent</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Mois</label>
+                            <select class="form-select" id="paiementMois" required>
+                                <option value="">Choisir le mois</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Montant (FCFA)</label>
+                            <input type="number" class="form-control" id="paiementMontant" value="500" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Date du Paiement</label>
+                            <input type="date" class="form-control" id="paiementDate" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary" onclick="enregistrerPaiement()">Enregistrer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Dépense -->
+    <div class="modal fade" id="depenseModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nouvelle Dépense</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="depenseForm">
+                        <div class="mb-3">
+                            <label class="form-label">Date</label>
+                            <input type="date" class="form-control" id="depenseDate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Montant (FCFA)</label>
+                            <input type="number" class="form-control" id="depenseMontant" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Motif</label>
+                            <input type="text" class="form-control" id="depenseMotif" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Bénéficiaire</label>
+                            <input type="text" class="form-control" id="depenseBeneficiaire" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Pièce Justificative (optionnel)</label>
+                            <input type="file" class="form-control" id="depenseJustificatif">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-success" onclick="enregistrerDepense()">Enregistrer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Clôture -->
+    <div class="modal fade" id="clotureModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Clôturer la Période</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <strong>Attention:</strong> Cette action est irréversible. Voulez-vous vraiment clôturer la période courante ?
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <strong>Ancien Solde de Départ:</strong>
+                            <div id="ancienSolde" class="h5 text-primary">0 FCFA</div>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Nouveau Solde de Départ:</strong>
+                            <div id="nouveauSolde" class="h5 text-success">0 FCFA</div>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <small class="text-muted">
+                            Les totaux de cotisations et dépenses seront réinitialisés pour la nouvelle période.
+                            L'historique complet sera conservé.
+                        </small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-warning" onclick="cloturerPeriode()">Confirmer la Clôture</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@10.0.0"></script>
+    <script src="js/appwrite-config.js"></script>
+    <script src="js/agentC-dashboard.js"></script>
+</body>
+</html>

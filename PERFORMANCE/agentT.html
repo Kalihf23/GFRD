@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Superviseur - AgentT</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="styles/main.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar">
+        <div class="sidebar-header p-3">
+            <h5 class="text-white">Performance-GSM</h5>
+            <small class="text-muted">Espace Superviseur</small>
+        </div>
+        
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" href="#dashboard" data-bs-toggle="tab">
+                    <i class="fas fa-tachometer-alt"></i>Tableau de Bord
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#performance" data-bs-toggle="tab">
+                    <i class="fas fa-chart-line"></i>Saisir Performances
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#feedback" data-bs-toggle="tab">
+                    <i class="fas fa-comment"></i>Saisir Feedback
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#tasks" data-bs-toggle="tab">
+                    <i class="fas fa-tasks"></i>Tâches
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#mail" data-bs-toggle="tab">
+                    <i class="fas fa-envelope"></i>Mail
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#message" data-bs-toggle="tab">
+                    <i class="fas fa-comments"></i>Message
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#about" data-bs-toggle="tab">
+                    <i class="fas fa-info-circle"></i>À propos
+                </a>
+            </li>
+            <li class="nav-item mt-3">
+                <a class="nav-link text-warning" href="#" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>Déconnexion
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container-fluid">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="mb-0" id="welcomeMessage">Bienvenue, Superviseur</h4>
+                <div class="d-flex align-items-center">
+                    <span class="badge bg-primary me-3" id="userTeam"></span>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user me-2"></i>
+                            <span id="userName"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Paramètres</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="#" id="logoutBtn2"><i class="fas fa-sign-out-alt me-2"></i>Déconnexion</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenu des onglets -->
+            <div class="tab-content">
+                <!-- Tableau de Bord (identique à agent.html) -->
+                <div class="tab-pane fade show active" id="dashboard">
+                    <!-- Même contenu que agent.html -->
+                </div>
+
+                <!-- Saisir Performances (identique à agent.html) -->
+                <div class="tab-pane fade" id="performance">
+                    <!-- Même contenu que agent.html -->
+                </div>
+
+                <!-- Saisir Feedback (identique à agent.html) -->
+                <div class="tab-pane fade" id="feedback">
+                    <!-- Même contenu que agent.html -->
+                </div>
+
+                <!-- Tâches -->
+                <div class="tab-pane fade" id="tasks">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">Suivi des Performances - 3 Derniers Jours Ouvrés</h5>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="outboundFilter" checked>
+                                        <label class="form-check-label" for="outboundFilter">
+                                            Exclure weekends (Outbound)
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover">
+                                            <thead class="table-dark">
+                                                <tr>
+                                                    <th>Agent</th>
+                                                    <th>Équipe</th>
+                                                    <th id="day1Header">Jour 1</th>
+                                                    <th id="day2Header">Jour 2</th>
+                                                    <th id="day3Header">Jour 3</th>
+                                                    <th>Statut Global</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tasksTableBody">
+                                                <!-- Données chargées via JavaScript -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    
+                                    <div class="mt-4">
+                                        <h6>Légende :</h6>
+                                        <div class="d-flex flex-wrap gap-3">
+                                            <span class="badge bg-success"><i class="fas fa-check"></i> Validé</span>
+                                            <span class="badge bg-danger"><i class="fas fa-times"></i> Non Validé</span>
+                                            <span class="badge bg-secondary"><i class="fas fa-minus"></i> Non Ouvré</span>
+                                            <span class="badge bg-warning"><i class="fas fa-exclamation"></i> En Retard</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Statistiques de Complétion</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-container">
+                                        <canvas id="completionChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Alertes et Retards</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div id="alertsList">
+                                        <!-- Alertes chargées via JavaScript -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mail (identique à agent.html) -->
+                <div class="tab-pane fade" id="mail">
+                    <!-- Même contenu que agent.html -->
+                </div>
+
+                <!-- Message (identique à agent.html) -->
+                <div class="tab-pane fade" id="message">
+                    <!-- Même contenu que agent.html -->
+                </div>
+
+                <!-- À propos (identique à agent.html) -->
+                <div class="tab-pane fade" id="about">
+                    <!-- Même contenu que agent.html -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/appwrite@10.0.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/appwrite-config.js"></script>
+    <script src="js/agentT-dashboard.js"></script>
+</body>
+</html>
